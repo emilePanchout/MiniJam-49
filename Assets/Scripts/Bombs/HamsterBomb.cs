@@ -21,6 +21,7 @@ public class HamsterBomb : Bombs
     public GameObject handFatSprite;
     public GameObject handThrowUpSprite;
     public GameObject handSlimSprite;
+    public GameObject throwUpParticles;
 
     public void Start()
     {
@@ -31,6 +32,7 @@ public class HamsterBomb : Bombs
         handFatSprite = GameObject.Find("HandFat");
         handThrowUpSprite = GameObject.Find("ThrowUp");
         handSlimSprite = GameObject.Find("HandSlim");
+        throwUpParticles = GameObject.Find("ThrowUpParticles");
 
     }
 
@@ -87,17 +89,24 @@ public class HamsterBomb : Bombs
         else if(state == 3) // hand slim
         {
             handFatSprite.GetComponent<Image>().enabled = false;
+            handClosed.GetComponent<Image>().enabled = true;
             handThrowUpSprite.GetComponent<Image>().enabled = true;
+            throwUpParticles.GetComponent<ParticleSystem>().Play();
 
-            DOVirtual.DelayedCall(0.5f, () =>
+            state++;
+
+
+            DOVirtual.DelayedCall(2, () =>
             {
+                handClosed.GetComponent<Image>().enabled = false;
                 handThrowUpSprite.GetComponent<Image>().enabled = false;
                 handSlimSprite.GetComponent<Image>().enabled = true;
-                state++;
+                throwUpParticles.GetComponent<ParticleSystem>().Stop();
+
             });
 
         }
-        else if(state == 4) // repose le slim
+        else if(state == 4 && handClosed.GetComponent<Image>().enabled == false) // repose le slim
         {
             slimSprite.SetActive(true);
 
@@ -105,6 +114,7 @@ public class HamsterBomb : Bombs
             handReleased.GetComponent<Image>().enabled = true;
 
             isUnpacked = true;
+            isDefused = true;
         }
 
 

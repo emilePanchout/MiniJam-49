@@ -28,8 +28,9 @@ public class Tools : MonoBehaviour
 
             if (Physics.Raycast(r, out RaycastHit hit))
             {
-                // prend sur l'objet
-                if (hit.collider.CompareTag("Tool") && hit.collider.gameObject == gameObject && isDraggable)
+                // prend l'outil
+                if (hit.collider.CompareTag("Tool") && hit.collider.gameObject == gameObject && isDraggable &&
+                    !gameManager.currentBomb.isInHand && ((gameManager.currentBomb.isUnpacked && !gameManager.currentBomb.isOnConveyor) || (!gameManager.currentBomb.isUnpacked && gameManager.currentBomb.isOnConveyor)))
                 {
                     isDragging = true;
                     collider.enabled = false;
@@ -42,17 +43,17 @@ public class Tools : MonoBehaviour
             }
         }
         // Detection de click gauche avec outil
-        else if (Input.GetMouseButtonDown(0) && gameManager.currentTool != null)
+        else if (Input.GetMouseButtonDown(0) && gameManager.currentTool != null && !gameManager.currentBomb.isInHand)
         {
             ActivateTool();
         }
-        else if (Input.GetMouseButtonUp(0) && gameManager.currentTool != null)
+        else if (Input.GetMouseButtonUp(0) && gameManager.currentTool != null && !gameManager.currentBomb.isInHand)
         {
             DeactivateTool();
         }
 
         // Detection de click droit
-        if (Input.GetMouseButtonDown(1) && gameManager.currentTool == this)
+        if (Input.GetMouseButtonDown(1) && gameManager.currentTool == this && !gameManager.currentBomb.isInHand)
         {
             isDragging = false;
             collider.enabled = true;

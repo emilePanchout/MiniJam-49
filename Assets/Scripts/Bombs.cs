@@ -22,6 +22,7 @@ public class Bombs : MonoBehaviour
     public bool isMoving = false;
     public bool isDefused = false;
     public bool isUnpacked = true;
+    public bool isInHand = false;
 
     public List<string> defusersList;
     public List<string> exploderList;
@@ -53,6 +54,7 @@ public class Bombs : MonoBehaviour
                     isDragging = true;
                     isOnConveyor = false;
                     collider.enabled = false;
+                    isInHand = true;
 
                     gameManager.handCursor.SwitchHands();
                 }
@@ -63,6 +65,7 @@ public class Bombs : MonoBehaviour
                     isDragging = true;
                     collider.enabled = false;
                     areaCollider.enabled = true;
+                    isInHand = true;
 
                     gameManager.handCursor.SwitchHands();
                 }
@@ -85,6 +88,7 @@ public class Bombs : MonoBehaviour
                     isDragging = false;
                     collider.enabled = true;
                     areaCollider.enabled = false;
+                    isInHand = false;
 
                     gameObject.transform.position = hit.collider.transform.position;
 
@@ -97,6 +101,7 @@ public class Bombs : MonoBehaviour
                     isDragging = false;
                     isOnConveyor = true;
                     collider.enabled = true;
+                    isInHand = false;
                     gameObject.transform.position = hit.collider.transform.position;
 
                     gameManager.handCursor.SwitchHands();
