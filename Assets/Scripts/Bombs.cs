@@ -7,8 +7,10 @@ public class Bombs : MonoBehaviour
     private Camera cam;
     private GameManager gameManager;
     private SoundManager SoundManager;
+    private Collider areaCollider;
 
     public Collider collider;
+
     public ParticleSystem particles;
     public GameObject model;
 
@@ -26,9 +28,9 @@ public class Bombs : MonoBehaviour
 
     public void Awake()
     {
-
         gameManager = FindFirstObjectByType<GameManager>();
         SoundManager = FindFirstObjectByType<SoundManager>();
+        areaCollider = GameObject.Find("Area").GetComponent<Collider>();
         cam = FindFirstObjectByType<Camera>();
     }
 
@@ -60,6 +62,7 @@ public class Bombs : MonoBehaviour
                 {
                     isDragging = true;
                     collider.enabled = false;
+                    areaCollider.enabled = true;
 
                     gameManager.handCursor.SwitchHands();
                 }
@@ -75,6 +78,8 @@ public class Bombs : MonoBehaviour
                 {
                     isDragging = false;
                     collider.enabled = true;
+                    areaCollider.enabled = false;
+
                     gameObject.transform.position = hit.collider.transform.position;
 
                     gameManager.handCursor.SwitchHands();

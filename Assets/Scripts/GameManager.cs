@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public int maxBomb = 10;
     [SerializeField] private int bombCount;
-    public float maxGameTime = 100;
+    public float maxGameTime;
     [SerializeField] private float SceneTime;
     [SerializeField] private bool isLost = false;
     [SerializeField] private bool isWon = false;
@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public Transform middleConveyor;
     public Transform endConveyor;
     public Transform clockHand;
+    public Animator coucouAnimator;
 
     public TMP_Text LoseText;
     public TMP_Text WinText;
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviour
 
         if (SceneTime > maxGameTime && !isLost)
         {
+            coucouAnimator.SetBool("isLost", true);
             TriggerLose();
         }
     }
@@ -125,7 +127,7 @@ public class GameManager : MonoBehaviour
         {
             isLost = true;
 
-            LoseText.DOFade(1f, 1)
+            LoseText.DOFade(1f, 2)
                .SetEase(Ease.Linear);
 
             DOVirtual.DelayedCall(3, () =>
@@ -141,8 +143,10 @@ public class GameManager : MonoBehaviour
         if(!isWon && !isLost)
         {
             isWon = true;
-            WinText.text = "You won with " + Mathf.Round((maxGameTime - SceneTime) * 10.0f) * 0.1f + " seconds of spare time";
+            float spareTime = Mathf.Round((maxGameTime - SceneTime) * 10.0f) * 0.1f;
+            SaveScore(spareTime);
 
+            WinText.text = "You won with " + spareTime + " seconds of spare time";
             WinText.DOFade(1f, 1)
                    .SetEase(Ease.Linear);
 
@@ -155,14 +159,17 @@ public class GameManager : MonoBehaviour
 
     public void StartClockRotation()
     {
-        // Reset au début
-        clockHand.localRotation = Quaternion.Euler(0, 0, 0);
 
         clockHand.DOLocalRotate(
-            new Vector3(0, 0, -360),  // -360° sens horaire
-            10,
-            RotateMode.FastBeyond360
+            new Vector3(0, 0, 360),
+            maxGameTime,
+            RotateMode.WorldAxisAdd
         )
         .SetEase(Ease.Linear);
+    }
+
+    public void SaveScore(float score)
+    {
+        PlayerPrefs.SetFloat("Score", score);
     }
 }
