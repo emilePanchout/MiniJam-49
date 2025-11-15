@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class HamsterBomb : Bombs
 {
@@ -11,6 +13,26 @@ public class HamsterBomb : Bombs
     public GameObject mugSprite;
     public GameObject armSprite;
     public GameObject caseSprite;
+
+    public GameObject handReleased;
+    public GameObject handClosed;
+
+    public GameObject handPinchSprite;
+    public GameObject handFatSprite;
+    public GameObject handThrowUpSprite;
+    public GameObject handSlimSprite;
+
+    public void Start()
+    {
+        handReleased = gameManager.handCursor.releasedHand;
+        handClosed = gameManager.handCursor.closedHand;
+
+        handPinchSprite = GameObject.Find("HandPinch");
+        handFatSprite = GameObject.Find("HandFat");
+        handThrowUpSprite = GameObject.Find("ThrowUp");
+        handSlimSprite = GameObject.Find("HandSlim");
+
+    }
 
     public override void TryDefuse(string toolName)
     {
@@ -29,16 +51,62 @@ public class HamsterBomb : Bombs
 
     public override void Unpack()
     {
-        if (state == 0)
+        if (state == 0) // unbox
         {
             boxSprite.SetActive(false);
+            fatSprite.SetActive(true);
+            mugSprite.SetActive(true);
+            armSprite.SetActive(true);
+            caseSprite.SetActive(true);
+
+            handReleased.GetComponent<Image>().enabled = false;
+            handPinchSprite.GetComponent<Image>().enabled = true;
             state++;
         }
-        else if (state == 1)
+        else if (state == 1) // mug
         {
             mugSprite.SetActive(false);
+
+            handPinchSprite.GetComponent<Image>().enabled = false;
+            handReleased.GetComponent<Image>().enabled = true;
+
+            state++;
+        }
+        else if (state == 2) // hand fat
+        {
+            fatSprite.SetActive(false);
+            armSprite.SetActive(false);
+
+            handFatSprite.GetComponent<Image>().enabled = true;
+            handSlimSprite.GetComponent<Image>().enabled = false;
+
+            handPinchSprite.GetComponent<Image>().enabled = false;
+            handReleased.GetComponent<Image>().enabled = false;
+            state++;
+        }
+        else if(state == 3) // hand slim
+        {
+            handFatSprite.GetComponent<Image>().enabled = false;
+            handThrowUpSprite.GetComponent<Image>().enabled = true;
+
+            DOVirtual.DelayedCall(0.5f, () =>
+            {
+                handThrowUpSprite.GetComponent<Image>().enabled = false;
+                handSlimSprite.GetComponent<Image>().enabled = true;
+                state++;
+            });
+
+        }
+        else if(state == 4) // repose le slim
+        {
+            slimSprite.SetActive(true);
+
+            handSlimSprite.GetComponent<Image>().enabled = false;
+            handReleased.GetComponent<Image>().enabled = true;
+
             isUnpacked = true;
         }
+
 
     }
 }

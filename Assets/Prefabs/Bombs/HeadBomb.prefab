@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 4.01, z: -0}
-  m_LocalScale: {x: 7, y: 7, z: 7}
+  m_LocalScale: {x: 14, y: 14, z: 14}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5988033376171456077}
@@ -4782,7 +4782,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
+  - {fileID: 2100000, guid: adb8248ad7d1f6645bb31a8149e3b709, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4863,7 +4863,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.3700001, z: 1.4}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3669768656322279715}
@@ -4987,6 +4987,8 @@ MonoBehaviour:
   isUnpacked: 0
   defusersList:
   - TestTool
+  - Glass
+  - Pince
   exploderList:
   - TestTool1
   state: 0
@@ -5031,8 +5033,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8808153, y: 0.93549925, z: 0.6505753}
-  m_Center: {x: 0.0021760166, y: 0.49120024, z: 0.028471887}
+  m_Size: {x: 1.7907784, y: 1.9393227, z: 0.6505753}
+  m_Center: {x: 0.016695648, y: 0.99311197, z: 0.028471887}
 --- !u!1 &2615149264838197901
 GameObject:
   m_ObjectHideFlags: 0
@@ -5059,8 +5061,8 @@ Transform:
   m_GameObject: {fileID: 2615149264838197901}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 6.05, z: -1.75}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 13.4, z: -1.75}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1011465614401770271}
@@ -5150,7 +5152,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.71, z: 2.65}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1011465614401770271}
@@ -5240,7 +5242,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.37, z: 1.4}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1011465614401770271}
@@ -5330,7 +5332,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.65, y: -3.82, z: 3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1011465614401770271}
@@ -5418,7 +5420,7 @@ Transform:
   m_GameObject: {fileID: 7261874644314951157}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.374, z: 0}
+  m_LocalPosition: {x: 0, y: 0.733, z: 0}
   m_LocalScale: {x: 0.07, y: 0.07, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5457,7 +5459,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.48}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1011465614401770271}
@@ -5528,6 +5530,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4458235909570674848}
     m_Modifications:
+    - target: {fileID: 1818714256411723733, guid: a2f679b59ccd4dc4faf012d410448fa4, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8097f82e441408b41a0c44bba9e78050, type: 2}
     - target: {fileID: 2238960242574089243, guid: a2f679b59ccd4dc4faf012d410448fa4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.00132
@@ -5571,6 +5577,10 @@ PrefabInstance:
     - target: {fileID: 5576796213321200401, guid: a2f679b59ccd4dc4faf012d410448fa4, type: 3}
       propertyPath: m_Name
       value: ExplosionParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8307572663358338886, guid: a2f679b59ccd4dc4faf012d410448fa4, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HandCursor : MonoBehaviour
 {
@@ -39,15 +40,15 @@ public class HandCursor : MonoBehaviour
 
     public void SwitchHands()
     {
-        if(releasedHand.activeSelf)
+        if(releasedHand.GetComponent<Image>().enabled)
         {
-            releasedHand.SetActive(false);
-            closedHand.SetActive(true);
+            releasedHand.GetComponent<Image>().enabled = false;
+            closedHand.GetComponent<Image>().enabled = true;
         }
         else
         {
-            closedHand.SetActive(false);
-            releasedHand.SetActive(true);
+            closedHand.GetComponent<Image>().enabled = false;
+            releasedHand.GetComponent<Image>().enabled = true;
         }
     }
 }

@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     public TMP_Text LoseText;
     public TMP_Text WinText;
+    public Material conveyorMat;
 
     public SoundManager soundManager;
     public HandCursor handCursor;
@@ -48,12 +49,19 @@ public class GameManager : MonoBehaviour
             coucouAnimator.SetBool("isLost", true);
             TriggerLose();
         }
+
+        if(currentBomb.isOnConveyor)
+        {
+            conveyorMat.SetTextureOffset("_BaseMap", new Vector2(currentBomb.transform.position.x * 0.8f + 0.8f, 0));
+        }
+
     }
 
     public void StartGame()
     {
         bombCount = 0;
         SpawnNextBomb(1);
+        MoveConveyor();
     }
 
     public void SpawnNextBomb(int maxDifficulty)
@@ -170,6 +178,19 @@ public class GameManager : MonoBehaviour
 
     public void SaveScore(float score)
     {
-        PlayerPrefs.SetFloat("Score", score);
+        if(score > PlayerPrefs.GetFloat("score"))
+        {
+            PlayerPrefs.SetFloat("score", score);
+        }
+
+    }
+
+    public void MoveConveyor()
+    {
+        //conveyorMat.DOOffset(new Vector2(100,0), 160);
+    }
+    public void StopConveyor()
+    {
+
     }
 }

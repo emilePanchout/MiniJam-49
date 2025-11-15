@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Bombs : MonoBehaviour
 {
     private Camera cam;
-    private GameManager gameManager;
+    protected GameManager gameManager;
     private SoundManager SoundManager;
     private Collider areaCollider;
 
@@ -73,6 +73,12 @@ public class Bombs : MonoBehaviour
                     Unpack();
                 }
 
+                // Defuse sans outil
+                else if (hit.collider.CompareTag("Bomb") && !isOnConveyor && isUnpacked)
+                {
+                    TryDefuse("Hands");
+                }
+
                 // pose la bombe sur la table
                 if (hit.collider.CompareTag("TableArea") && isDragging)
                 {
@@ -99,7 +105,7 @@ public class Bombs : MonoBehaviour
             }
         }
 
-        // Detection de click avec outil
+        // Detection de click avec outil sur bomb
         if (Input.GetMouseButtonDown(0) && gameManager.currentTool != null && !isOnConveyor && isUnpacked)
         {
             Ray r = cam.ScreenPointToRay(Input.mousePosition);

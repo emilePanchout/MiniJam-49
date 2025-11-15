@@ -11,7 +11,7 @@ public class Tools : MonoBehaviour
     public bool isDragging = false;
 
     private Camera cam;
-    private GameManager gameManager;
+    protected GameManager gameManager;
 
     public void Awake()
     {
@@ -21,7 +21,7 @@ public class Tools : MonoBehaviour
 
     public void Update()
     {
-        // Detection de click gauche
+        // Detection de click gauche sans outil
         if (Input.GetMouseButtonDown(0) && gameManager.currentTool == null)
         {
             Ray r = cam.ScreenPointToRay(Input.mousePosition);
@@ -33,6 +33,7 @@ public class Tools : MonoBehaviour
                 {
                     isDragging = true;
                     collider.enabled = false;
+                    TakeTool();
 
                     gameManager.currentTool = hit.collider.gameObject.GetComponent<Tools>();
                     gameManager.handCursor.SwitchHands();
@@ -40,11 +41,14 @@ public class Tools : MonoBehaviour
 
             }
         }
-
-        // L'objet suit la souris
-        if (isDragging)
+        // Detection de click gauche avec outil
+        else if (Input.GetMouseButtonDown(0) && gameManager.currentTool != null)
         {
-            GetComponent<DragObject>().MoveTargetToCursor(gameObject.transform);
+            ActivateTool();
+        }
+        else if (Input.GetMouseButtonUp(0) && gameManager.currentTool != null)
+        {
+            DeactivateTool();
         }
 
         // Detection de click droit
@@ -54,8 +58,35 @@ public class Tools : MonoBehaviour
             collider.enabled = true;
             gameManager.currentTool = null;
             transform.position = root.position;
+            DropTool();
 
             gameManager.handCursor.SwitchHands();
         }
+
+        // L'objet suit la souris
+        if (isDragging)
+        {
+            GetComponent<DragObject>().MoveTargetToCursor(gameObject.transform);
+        }
+    }
+
+    public virtual void TakeTool()
+    {
+
+    }
+
+    public virtual void DropTool()
+    {
+
+    }
+
+    public virtual void ActivateTool()
+    { 
+    
+    }
+
+    public virtual void DeactivateTool()
+    {
+
     }
 }
