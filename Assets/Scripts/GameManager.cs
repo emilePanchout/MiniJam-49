@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -18,8 +19,9 @@ public class GameManager : MonoBehaviour
     public Transform clockHand;
     public Animator coucouAnimator;
 
-    public TMP_Text LoseText;
-    public TMP_Text WinText;
+    public Image LoseText;
+    public Image WinText;
+    public TMP_Text scoreText;
     public Material conveyorMat;
 
     public SoundManager soundManager;
@@ -102,6 +104,7 @@ public class GameManager : MonoBehaviour
 
     public void MoveBombToEnd()
     {
+        Debug.Log("Move");
         if (currentBomb.isOnConveyor && !currentBomb.isMoving)
         {
             currentBomb.isDraggable = false;
@@ -154,7 +157,10 @@ public class GameManager : MonoBehaviour
             float spareTime = Mathf.Round((maxGameTime - SceneTime) * 10.0f) * 0.1f;
             SaveScore(spareTime);
 
-            WinText.text = "You won with " + spareTime + " seconds of spare time";
+            scoreText.text = spareTime.ToString();
+            scoreText.DOFade(1f, 1)
+                   .SetEase(Ease.Linear);
+
             WinText.DOFade(1f, 1)
                    .SetEase(Ease.Linear);
 
