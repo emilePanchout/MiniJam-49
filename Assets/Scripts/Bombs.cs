@@ -1,10 +1,12 @@
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class Bombs : MonoBehaviour
 {
     private Camera cam;
     private GameManager gameManager;
+    private SoundManager SoundManager;
 
     public Collider collider;
     public ParticleSystem particles;
@@ -17,17 +19,23 @@ public class Bombs : MonoBehaviour
     public bool isOnConveyor = true;
     public bool isMoving = false;
     public bool isDefused = false;
+    public bool isUnpacked = true;
 
+    public List<string> defusersList;
+    public List<string> exploderList;
 
     public void Awake()
     {
+
         gameManager = FindFirstObjectByType<GameManager>();
+        SoundManager = FindFirstObjectByType<SoundManager>();
         cam = FindFirstObjectByType<Camera>();
     }
 
 
-    void Update()
+    public void Update()
     {
+
         // Detection de click sans outil
         if (Input.GetMouseButtonDown(0) && gameManager.currentTool == null)
         {
@@ -35,12 +43,31 @@ public class Bombs : MonoBehaviour
 
             if (Physics.Raycast(r, out RaycastHit hit))
             {
-                // prend la bombe
-                if (hit.collider.CompareTag("Bomb") && isDraggable)
+                Debug.Log(hit.collider.transform.name);
+
+                // prend la bombe du tapis
+                if (hit.collider.CompareTag("Bomb") && isDraggable && isOnConveyor)
                 {
                     isDragging = true;
                     isOnConveyor = false;
                     collider.enabled = false;
+
+                    gameManager.handCursor.SwitchHands();
+                }
+
+                // prend la bombe unpacked
+                else if (hit.collider.CompareTag("Bomb") && isDraggable && !isOnConveyor && isUnpacked)
+                {
+                    isDragging = true;
+                    collider.enabled = false;
+
+                    gameManager.handCursor.SwitchHands();
+                }
+
+                // unpack la bombe
+                else if (hit.collider.CompareTag("Bomb") && isDraggable && !isOnConveyor && !isUnpacked)
+                {
+                    Unpack();
                 }
 
                 // pose la bombe sur la table
@@ -49,22 +76,26 @@ public class Bombs : MonoBehaviour
                     isDragging = false;
                     collider.enabled = true;
                     gameObject.transform.position = hit.collider.transform.position;
+
+                    gameManager.handCursor.SwitchHands();
                 }
 
                 // repose la bombe sur le tapis
-                if (hit.collider.CompareTag("ConveyorArea") && isDragging)
+                if (hit.collider.CompareTag("ConveyorArea") && isDragging && isUnpacked)
                 {
                     isDragging = false;
                     isOnConveyor = true;
                     collider.enabled = true;
                     gameObject.transform.position = hit.collider.transform.position;
+
+                    gameManager.handCursor.SwitchHands();
                 }
 
             }
         }
 
         // Detection de click avec outil
-        if (Input.GetMouseButtonDown(0) && gameManager.currentTool != null && !isOnConveyor)
+        if (Input.GetMouseButtonDown(0) && gameManager.currentTool != null && !isOnConveyor && isUnpacked)
         {
             Ray r = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -86,10 +117,12 @@ public class Bombs : MonoBehaviour
     }
 
     public virtual void TryDefuse(string toolName) { }
+    public virtual void Unpack() { }
 
     public void TriggerExplosion()
     {
         particles.Play();
+        SoundManager.ExplosionSound.Play();
         Destroy(model);
 
         DOVirtual.DelayedCall(particles.main.duration, () =>

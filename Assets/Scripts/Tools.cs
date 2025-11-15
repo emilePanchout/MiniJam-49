@@ -35,6 +35,7 @@ public class Tools : MonoBehaviour
                     collider.enabled = false;
 
                     gameManager.currentTool = hit.collider.gameObject.GetComponent<Tools>();
+                    gameManager.handCursor.SwitchHands();
                 }
 
             }
@@ -53,6 +54,8 @@ public class Tools : MonoBehaviour
             collider.enabled = true;
             gameManager.currentTool = null;
             transform.position = root.position;
+
+            gameManager.handCursor.SwitchHands();
         }
     }
 }
