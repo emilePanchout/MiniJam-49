@@ -1,17 +1,17 @@
-using UnityEngine;
+//using UnityEngine;
 
-public class TimeManager : MonoBehaviour
-{
+//public class TimeManager : MonoBehaviour
+//{
 
-    [SerializeField] public float SceneTime;
+//    [SerializeField] public float SceneTime;
 
-    private void Update()
-    {
-        SceneTime = Time.timeSinceLevelLoad;
-    }
+//    private void Update()
+//    {
+//        SceneTime = Time.timeSinceLevelLoad;
+//    }
 
-    public float GetTimeScene()
-    {
-        return SceneTime;
-    }
-}
+//    public float GetTimeScene()
+//    {
+//        return SceneTime;
+//    }
+//}

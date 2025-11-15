@@ -5,18 +5,21 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private int bombCount;
     public int maxBomb = 10;
+    [SerializeField] private int bombCount;
     public float maxGameTime = 100;
+    [SerializeField] private float SceneTime;
+    [SerializeField] private bool isLost = false;
+    [SerializeField] private bool isWon = false;
 
     public Transform bombSpawner;
     public Transform middleConveyor;
     public Transform endConveyor;
+    public Transform clockHand;
 
     public TMP_Text LoseText;
     public TMP_Text WinText;
 
-    public TimeManager timeManager;
     public SoundManager soundManager;
     public HandCursor handCursor;
 
@@ -28,7 +31,21 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         StartGame();
+        StartClockRotation();
+       
+
         Cursor.visible = false;
+    }
+
+    private void Update()
+    {
+        // mesure le temps
+        SceneTime = Time.timeSinceLevelLoad;
+
+        if (SceneTime > maxGameTime && !isLost)
+        {
+            TriggerLose();
+        }
     }
 
     public void StartGame()
@@ -104,26 +121,48 @@ public class GameManager : MonoBehaviour
 
     public void TriggerLose()
     {
-        LoseText.DOFade(1f, 1)
+        if(!isLost && !isWon)
+        {
+            isLost = true;
+
+            LoseText.DOFade(1f, 1)
                .SetEase(Ease.Linear);
 
-        DOVirtual.DelayedCall(3, () =>
-        {
-            SceneManager.LoadScene("GameScene");
-        });
+            DOVirtual.DelayedCall(3, () =>
+            {
+                SceneManager.LoadScene("GameScene");
+            });
+        }
         
     }
 
     public void TriggerVictory()
     {
-        WinText.text = "You won with " + Mathf.Round((maxGameTime - timeManager.GetTimeScene()) * 10.0f) * 0.1f + " seconds of spare time";
-
-        WinText.DOFade(1f, 1)
-               .SetEase(Ease.Linear);
-
-        DOVirtual.DelayedCall(3, () =>
+        if(!isWon && !isLost)
         {
-            SceneManager.LoadScene("GameScene");
-        });
+            isWon = true;
+            WinText.text = "You won with " + Mathf.Round((maxGameTime - SceneTime) * 10.0f) * 0.1f + " seconds of spare time";
+
+            WinText.DOFade(1f, 1)
+                   .SetEase(Ease.Linear);
+
+            DOVirtual.DelayedCall(3, () =>
+            {
+                SceneManager.LoadScene("GameScene");
+            });
+        }
+    }
+
+    public void StartClockRotation()
+    {
+        // Reset au début
+        clockHand.localRotation = Quaternion.Euler(0, 0, 0);
+
+        clockHand.DOLocalRotate(
+            new Vector3(0, 0, -360),  // -360° sens horaire
+            10,
+            RotateMode.FastBeyond360
+        )
+        .SetEase(Ease.Linear);
     }
 }
