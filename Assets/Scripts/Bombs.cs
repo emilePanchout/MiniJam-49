@@ -46,8 +46,6 @@ public class Bombs : MonoBehaviour
 
             if (Physics.Raycast(r, out RaycastHit hit))
             {
-                Debug.Log(hit.collider.transform.name);
-
                 // prend la bombe du tapis
                 if (hit.collider.CompareTag("Bomb") && isDraggable && isOnConveyor)
                 {

@@ -3,6 +3,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float SceneTime;
     [SerializeField] private bool isLost = false;
     [SerializeField] private bool isWon = false;
+    [SerializeField] private float cumulativConveyorOffset = 0;
 
     public Transform bombSpawner;
     public Transform middleConveyor;
@@ -52,9 +54,10 @@ public class GameManager : MonoBehaviour
             TriggerLose();
         }
 
-        if(currentBomb.isOnConveyor)
+        if(currentBomb?.isOnConveyor == true)
         {
-            conveyorMat.SetTextureOffset("_BaseMap", new Vector2(currentBomb.transform.position.x * 0.8f + 0.8f, 0));
+            conveyorMat.SetTextureOffset("_BaseMap", new Vector2(currentBomb.transform.position.x * 0.8f + 4.34f* 0.8f + cumulativConveyorOffset, 0));
+            //Debug.Log(currentBomb.transform.position.x);
         }
 
     }
@@ -62,24 +65,48 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         bombCount = 0;
-        SpawnNextBomb(1);
-        MoveConveyor();
+        SpawnNextBomb();
     }
 
-    public void SpawnNextBomb(int maxDifficulty)
+    public void SpawnNextBomb()
     {
-        if(bombCount < maxBomb)
-        {
-            bombCount++;
+        bombCount++;
 
-            int rand = Random.Range(0, bombList.bombList.Count);
-            if (bombList.bombList[rand].GetComponent<Bombs>().difficulty <= maxDifficulty)
+        if (bombCount < maxBomb)
+        {
+
+            List<Bombs> possibleBombs = new List<Bombs>();
+
+            foreach(GameObject bomb in bombList.bombList)
             {
-                currentBomb = Instantiate(bombList.bombList[rand], bombSpawner).GetComponent<Bombs>();
-                MoveBombToMiddle();
+                if(bomb.GetComponent<Bombs>().difficulty == bombCount)
+                {
+                    possibleBombs.Add(bomb.GetComponent<Bombs>());
+
+                    Debug.Log("add " + bomb.transform.name + " to possibilities with difficulty " + bomb.GetComponent<Bombs>().difficulty);
+                }
             }
+
+            if(possibleBombs.Count == 0)
+            {
+                Debug.LogWarning("No bomb at difficulty " + bombCount);
+            }
+
+            int rand = Random.Range(0, possibleBombs.Count);
+            Debug.Log("Next bomb should be " + possibleBombs[rand]);
+
+            currentBomb = Instantiate(possibleBombs[rand], bombSpawner).GetComponent<Bombs>();
+            MoveBombToMiddle();
+
+
+
         }
-        else
+        else if(bombCount == maxBomb) // Derniere bombe
+        {
+            currentBomb = Instantiate(bombList.bombList[^1], bombSpawner).GetComponent<Bombs>();
+            MoveBombToMiddle();
+        }
+        else if(bombCount > maxBomb) // Dépassé la dernière bombe
         {
             TriggerVictory();
         }
@@ -93,7 +120,7 @@ public class GameManager : MonoBehaviour
             currentBomb.isMoving = true;
             soundManager.conveyorSound.Play();
 
-            currentBomb.transform.DOMove(middleConveyor.position, 3.75f).OnComplete(() => {
+            currentBomb.transform.DOMove(middleConveyor.position, 3.75f).SetEase(Ease.InOutQuad).OnComplete(() => {
 
                 currentBomb.isDraggable = true;
                 currentBomb.isMoving = false;
@@ -104,15 +131,15 @@ public class GameManager : MonoBehaviour
 
     public void MoveBombToEnd()
     {
-        Debug.Log("Move");
         if (currentBomb.isOnConveyor && !currentBomb.isMoving)
         {
             currentBomb.isDraggable = false;
             currentBomb.isMoving = true;
             soundManager.conveyorSound.Play();
 
-            currentBomb.transform.DOMove(endConveyor.position, 3.75f).OnComplete(() => {
+            currentBomb.transform.DOMove(endConveyor.position, 3.75f).SetEase(Ease.InOutQuad).OnComplete(() => {
 
+                cumulativConveyorOffset += conveyorMat.GetTextureOffset("_BaseMap").x;
                 currentBomb.isMoving=false;
                 soundManager.conveyorSound.Stop();
 
@@ -120,7 +147,8 @@ public class GameManager : MonoBehaviour
                 if (currentBomb.isDefused)
                 {
                     Destroy(currentBomb.gameObject);
-                    SpawnNextBomb(bombCount);
+                    currentBomb = null;
+                    SpawnNextBomb();
                 }
                 else
                 {
@@ -138,8 +166,12 @@ public class GameManager : MonoBehaviour
         {
             isLost = true;
 
-            LoseText.DOFade(1f, 2)
-               .SetEase(Ease.Linear);
+            DOVirtual.DelayedCall(2, () =>
+            {
+                LoseText.enabled = true;
+                LoseText.DOFade(1f, 2)
+                   .SetEase(Ease.Linear);
+            });
 
             DOVirtual.DelayedCall(3, () =>
             {
@@ -161,6 +193,7 @@ public class GameManager : MonoBehaviour
             scoreText.DOFade(1f, 1)
                    .SetEase(Ease.Linear);
 
+            WinText.enabled = true;
             WinText.DOFade(1f, 1)
                    .SetEase(Ease.Linear);
 
@@ -191,12 +224,4 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void MoveConveyor()
-    {
-        //conveyorMat.DOOffset(new Vector2(100,0), 160);
-    }
-    public void StopConveyor()
-    {
-
-    }
 }

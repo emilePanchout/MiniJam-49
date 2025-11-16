@@ -8,6 +8,9 @@ public class HeadBomb : Bombs
     [SerializeField] private float elapsedTime = 0f;
     [SerializeField] private bool isRunning = true;
 
+    public int maxForce;
+    public int minForce;
+
     [Header("References")]
     public GameObject topSprite;
     public GameObject backSprite;
@@ -58,7 +61,16 @@ public class HeadBomb : Bombs
     {
         if(state == 0)
         {
-            topSprite.SetActive(false);
+            //topSprite.SetActive(false);
+
+            int rndx = Random.Range(minForce, maxForce);
+            int rndy = Random.Range(minForce, maxForce);
+            topSprite.GetComponent<Rigidbody>().useGravity = true;
+            topSprite.GetComponent<Rigidbody>().AddForce(Vector3.up * 2f * rndx, ForceMode.Impulse);
+            topSprite.GetComponent<Rigidbody>().AddForce(Vector3.right * 2f * rndy, ForceMode.Impulse);
+            topSprite.GetComponent<Rigidbody>().AddTorque(Vector3.right * 5f * rndx, ForceMode.Impulse);
+            topSprite.GetComponent<Rigidbody>().AddTorque(Vector3.up * 5f * rndy, ForceMode.Impulse);
+
             state++;
         }
         else if(state == 1)

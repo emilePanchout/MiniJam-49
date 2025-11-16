@@ -14,6 +14,9 @@ public class HamsterBomb : Bombs
     public GameObject armSprite;
     public GameObject caseSprite;
 
+    public int maxForce;
+    public int minForce;
+
     public GameObject handReleased;
     public GameObject handClosed;
 
@@ -67,7 +70,14 @@ public class HamsterBomb : Bombs
         }
         else if (state == 1) // mug
         {
-            mugSprite.SetActive(false);
+            //mugSprite.SetActive(false);
+            int rndx = Random.Range(minForce, maxForce);
+            int rndy = Random.Range(minForce, maxForce);
+            mugSprite.GetComponent<Rigidbody>().useGravity = true;
+            mugSprite.GetComponent<Rigidbody>().AddForce(Vector3.up * 2f * rndx, ForceMode.Impulse);
+            mugSprite.GetComponent<Rigidbody>().AddForce(Vector3.right * 2f * rndy, ForceMode.Impulse);
+            mugSprite.GetComponent<Rigidbody>().AddTorque(Vector3.right * 5f * rndx, ForceMode.Impulse);
+            mugSprite.GetComponent<Rigidbody>().AddTorque(Vector3.up * 5f * rndy, ForceMode.Impulse);
 
             handPinchSprite.GetComponent<Image>().enabled = false;
             handReleased.GetComponent<Image>().enabled = true;

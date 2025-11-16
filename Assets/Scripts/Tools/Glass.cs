@@ -11,8 +11,10 @@ public class Glass : Tools
         if (gameManager.currentTool != null)
             if (gameManager.currentTool.toolName == toolName)
             {
-                verticalGlass.SetActive(false);
-                leanGlass.SetActive(true);
+                //verticalGlass.SetActive(false);
+                //leanGlass.SetActive(true);
+
+                verticalGlass.transform.Rotate(0, 0, 45);
             }
         
     }
@@ -22,8 +24,10 @@ public class Glass : Tools
         if (gameManager.currentTool != null)
             if (gameManager.currentTool.toolName == toolName)
             {
-                verticalGlass.SetActive(true);
-                leanGlass.SetActive(false);
+                //verticalGlass.SetActive(true);
+                //leanGlass.SetActive(false);
+
+                verticalGlass.transform.rotation = Quaternion.identity;
             }
     }
 
