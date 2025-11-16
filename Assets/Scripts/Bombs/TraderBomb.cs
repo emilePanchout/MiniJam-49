@@ -3,7 +3,6 @@ using DG.Tweening;
 
 public class Trader : Bombs
 {
-    [SerializeField] private int state = 0;
     [SerializeField] private float elapsedTime = 0f;
 
     public int maxForce;
@@ -48,35 +47,34 @@ public class Trader : Bombs
         else if (elapsedTime > maskDuration && startMask && !isDefused)
         {
             startMask = false;
-            TriggerExplosion();
+            TriggerExplosion(gameManager.soundManager.CoinSound, 0.5f);
         }
     }
 
     public override void TryDefuse(string toolName)
     {
-        
+        if(exploderList.Contains(toolName))
+        {
+            TriggerExplosion(gameManager.soundManager.CoinSound, 0.5f);
+        }
     }
 
     public override void Unpack()
     {
-        if (state == 0)
-        {
-            //ReturnCurve();
+        //ReturnCurve();
 
-            int rndx = Random.Range(minForce, maxForce);
-            int rndy = Random.Range(minForce, maxForce);
-            baseCurveSprite.GetComponent<Rigidbody>().useGravity = true;
-            baseCurveSprite.GetComponent<Rigidbody>().AddForce(Vector3.up * 2f * rndx, ForceMode.Impulse);
-            baseCurveSprite.GetComponent<Rigidbody>().AddForce(Vector3.right * 2f * rndy, ForceMode.Impulse);
-            baseCurveSprite.GetComponent<Rigidbody>().AddTorque(Vector3.right * 5f * rndx, ForceMode.Impulse);
-            baseCurveSprite.GetComponent<Rigidbody>().AddTorque(Vector3.up * 5f * rndy, ForceMode.Impulse);
+        int rndx = Random.Range(minForce, maxForce);
+        int rndy = Random.Range(minForce, maxForce);
+        baseCurveSprite.GetComponent<Rigidbody>().useGravity = true;
+        baseCurveSprite.GetComponent<Rigidbody>().AddForce(Vector3.up * 2f * rndx, ForceMode.Impulse);
+        baseCurveSprite.GetComponent<Rigidbody>().AddForce(Vector3.right * 2f * rndy, ForceMode.Impulse);
+        baseCurveSprite.GetComponent<Rigidbody>().AddTorque(Vector3.right * 5f * rndx, ForceMode.Impulse);
+        baseCurveSprite.GetComponent<Rigidbody>().AddTorque(Vector3.up * 5f * rndy, ForceMode.Impulse);
 
-            baseCurveSprite.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
+        baseCurveSprite.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
 
-            isUnpacked = true;
-            isDefused = true;
-
-        }
+        isUnpacked = true;
+        isDefused = true;
     }
 
 

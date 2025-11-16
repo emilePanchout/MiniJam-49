@@ -13,6 +13,7 @@ public class Bombs : MonoBehaviour
 
     public ParticleSystem particles;
     public GameObject model;
+    public AudioSource audioSource;
 
     public int difficulty;
 
@@ -23,6 +24,7 @@ public class Bombs : MonoBehaviour
     public bool isDefused = false;
     public bool isUnpacked = true;
     public bool isInHand = false;
+
 
     public List<string> defusersList;
     public List<string> exploderList;
@@ -91,6 +93,8 @@ public class Bombs : MonoBehaviour
                     gameObject.transform.position = hit.collider.transform.position;
 
                     gameManager.handCursor.SwitchHands();
+
+                    PutOnTable();
                 }
 
                 // repose la bombe sur le tapis
@@ -116,7 +120,7 @@ public class Bombs : MonoBehaviour
             if (Physics.Raycast(r, out RaycastHit hit))
             {
                 // applique l'outil
-                if (hit.collider.CompareTag("Bomb") && isDraggable)
+                if (hit.collider.CompareTag("Bomb"))
                 {
                     TryDefuse(gameManager.currentTool.toolName);
                 }
@@ -133,10 +137,26 @@ public class Bombs : MonoBehaviour
     public virtual void TryDefuse(string toolName) { }
     public virtual void Unpack() { }
 
+    public virtual void PutOnTable() { }
+
     public void TriggerExplosion()
     {
         particles.Play();
         SoundManager.ExplosionSound.Play();
+        Destroy(model);
+
+        DOVirtual.DelayedCall(particles.main.duration, () =>
+        {
+            gameManager.TriggerLose();
+        });
+
+    }
+
+    public void TriggerExplosion(AudioSource sound, float time)
+    {
+        particles.Play();
+        sound.time = time;
+        sound.Play();
         Destroy(model);
 
         DOVirtual.DelayedCall(particles.main.duration, () =>

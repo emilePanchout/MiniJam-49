@@ -152,7 +152,15 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    currentBomb.TriggerExplosion();
+                    if(currentBomb.audioSource != null)
+                    {
+                        currentBomb.TriggerExplosion(currentBomb.audioSource,0);
+                    }
+                    else
+                    {
+                        currentBomb.TriggerExplosion();
+                    }
+                    
                 }
 
             });
@@ -166,17 +174,20 @@ public class GameManager : MonoBehaviour
         {
             isLost = true;
 
-            DOVirtual.DelayedCall(2, () =>
+            DOVirtual.DelayedCall(1, () =>
             {
                 LoseText.enabled = true;
-                LoseText.DOFade(1f, 2)
+                LoseText.DOFade(1f, 1.5f)
                    .SetEase(Ease.Linear);
+            }).OnComplete(() =>
+            {
+                DOVirtual.DelayedCall(3, () =>
+                {
+                    SceneManager.LoadScene("GameScene");
+                });
             });
 
-            DOVirtual.DelayedCall(3, () =>
-            {
-                SceneManager.LoadScene("GameScene");
-            });
+            
         }
         
     }

@@ -47,6 +47,7 @@ public class HeadBomb : Bombs
         if (defusersList.Contains(toolName))
         {
             isDefused = true;
+            isRunning = false;
 
             bombOnSprite.SetActive(false);
             bombOffSprite.SetActive(true);

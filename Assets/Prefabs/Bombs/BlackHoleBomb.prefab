@@ -155,6 +155,7 @@ MonoBehaviour:
   - Pince
   - Glass
   - Toothpick
+  - Hammer
   exploderList: []
   state: 0
   minForce: 1
@@ -166,6 +167,7 @@ MonoBehaviour:
   topBackSprite: {fileID: 7629614089915681378}
   topFrontSprite: {fileID: 6252463118860545438}
   topSprites: {fileID: 7424431097734381011}
+  holeParticles: {fileID: 5880460548661517870}
   handReleased: {fileID: 0}
   handClosed: {fileID: 0}
 --- !u!114 &3039738691711745474
