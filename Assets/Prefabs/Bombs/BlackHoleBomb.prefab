@@ -142,7 +142,8 @@ MonoBehaviour:
   collider: {fileID: 8555177920087863160}
   particles: {fileID: 1780152728708320373}
   model: {fileID: 7346555532103096068}
-  difficulty: 4
+  audioSource: {fileID: 0}
+  difficulty: 5
   isDraggable: 0
   isDragging: 0
   isOnConveyor: 1
@@ -156,8 +157,8 @@ MonoBehaviour:
   - Glass
   - Toothpick
   - Hammer
+  - Wand
   exploderList: []
-  state: 0
   minForce: 1
   maxForce: 5
   blackHoleSprite: {fileID: 3128698149631028157}

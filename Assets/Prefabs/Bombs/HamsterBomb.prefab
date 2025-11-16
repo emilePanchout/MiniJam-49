@@ -207,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 2648609513540618554}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.52, y: 0.97, z: 0.54999995}
+  m_LocalPosition: {x: -0.52, y: 0.97, z: -7.9}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -349,7 +349,8 @@ MonoBehaviour:
   collider: {fileID: 8465567788501885670}
   particles: {fileID: 5333055497202759424}
   model: {fileID: 8855341206898943767}
-  difficulty: 2
+  audioSource: {fileID: 0}
+  difficulty: 3
   isDraggable: 0
   isDragging: 0
   isOnConveyor: 1

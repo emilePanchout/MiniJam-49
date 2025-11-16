@@ -67,6 +67,7 @@ public class ChronoBomb : Bombs
             gameManager.soundManager.TicTacSound.Stop();
             gameManager.soundManager.HammerSound.Play();
             isDefused = true;
+            isRunning = false;
         }
         if(exploderList.Contains(toolName))
         {

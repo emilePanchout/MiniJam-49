@@ -476,7 +476,7 @@ MonoBehaviour:
   particles: {fileID: 8927244961557309592}
   model: {fileID: 1942980234017583277}
   audioSource: {fileID: 0}
-  difficulty: 2
+  difficulty: 4
   isDraggable: 0
   isDragging: 0
   isOnConveyor: 1

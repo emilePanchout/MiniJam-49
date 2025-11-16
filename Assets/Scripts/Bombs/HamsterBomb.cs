@@ -70,7 +70,6 @@ public class HamsterBomb : Bombs
         }
         else if (state == 1) // mug
         {
-            //mugSprite.SetActive(false);
             int rndx = Random.Range(minForce, maxForce);
             int rndy = Random.Range(minForce, maxForce);
             mugSprite.GetComponent<Rigidbody>().useGravity = true;

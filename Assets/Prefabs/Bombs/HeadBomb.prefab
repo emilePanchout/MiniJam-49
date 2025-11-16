@@ -4978,7 +4978,8 @@ MonoBehaviour:
   collider: {fileID: 745351809716329377}
   particles: {fileID: 7686492117640431813}
   model: {fileID: 7261874644314951157}
-  difficulty: 2
+  audioSource: {fileID: 0}
+  difficulty: 1
   isDraggable: 0
   isDragging: 0
   isOnConveyor: 1
